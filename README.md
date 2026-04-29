@@ -14,6 +14,7 @@ For a smooth experience, we recommend using a Lavalink setup that already includ
 
 #### 2. Installation
 Clone this repository and install the required dependencies:
+
     ```bash
     git clone https://github.com/asynx6/Turtle-Music.git
     cd Turtle-Music
@@ -21,6 +22,7 @@ Clone this repository and install the required dependencies:
 
 3. Configuration
 Create a .env file in the root directory of the project and fill in your credentials as follows:
+
     ```bash
     DISCORD_TOKEN=
     PREFIX=b!
@@ -29,12 +31,13 @@ Create a .env file in the root directory of the project and fill in your credent
     LAVA_PORT=
     LAVA_PASS=
     LAVA_SECURE=false
+
 Note: Set LAVA_SECURE to true if your Lavalink provider uses SSL (https/wss).
 
 4. Running the Bot
 Once everything is configured, you can start the bot using:
 
-```bash
+   ```bash
    node index.js
 
 ✨ Features
