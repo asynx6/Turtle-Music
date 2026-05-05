@@ -11,7 +11,7 @@ async function pause(message, queue) {
     const player = serverQueue.player;
     
     if (player.paused) {
-        return message.reply(`Musiknya kan udah dijeda, nggak perlu di-pause lagi. Ketik \`${prefix}resume\` kalau mau lanjut!`);
+        return message.reply(`Musiknya kan udah dijeda, nggak perlu di-pause lagi. Ketik \`${process.env.PREFIX}resume\` kalau mau lanjut!`);
     }
 
     const currentSong = serverQueue.songs[0];

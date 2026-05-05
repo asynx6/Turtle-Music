@@ -1,3 +1,5 @@
+import { cleanup } from './handleplay/stream.js';
+
 async function stop(message, queue, shoukaku, idleTimers) {
     const serverQueue = queue.get(message.guild.id);
     const { channel } = message.member.voice;
@@ -32,18 +34,9 @@ async function stop(message, queue, shoukaku, idleTimers) {
         clearTimeout(idleTimers.get(message.guild.id));
         idleTimers.delete(message.guild.id);
     }
+    cleanup(message.guild.id, queue, shoukaku);
 
-    serverQueue.songs = [];
-
-    if (serverQueue.player) {
-        serverQueue.player.removeAllListeners('end');
-        serverQueue.player.stopTrack();
-    }
-
-    await shoukaku.leaveVoiceChannel(message.guild.id);
-    queue.delete(message.guild.id);
-
-    return message.reply("Musik berhenti Cabut dulu ya.");
+    return message.reply("Musik berhenti. Cabut dulu ya.");
 }
 
 export default stop;

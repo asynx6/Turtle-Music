@@ -1,6 +1,7 @@
 async function skip(message, queue) {
     const serverQueue = queue.get(message.guild.id);
     const { channel } = message.member.voice;
+    
     if (!serverQueue || !serverQueue.songs || serverQueue.songs.length === 0) {
         return message.reply("Lagi nggak ada musik yang muter, apa yang mau di-skip? 🤔");
     }
@@ -24,12 +25,10 @@ async function skip(message, queue) {
     else if (isRequesterOwner && !isUserOwner) {
         canSkip = false;
     }
-    else if (isUserAdmin) {
+    else if (isUserAdmin || isSongRequester) {
         canSkip = true;
     }
-    else if (isSongRequester) {
-        canSkip = true;
-    }
+
     if (!canSkip) {
         if (isRequesterOwner) {
             return message.reply(`Waduh! Ini lagu punya **Owner Discord**, kasta tertinggi! Nggak ada yang boleh skip selain beliau!`);
@@ -38,7 +37,7 @@ async function skip(message, queue) {
     }
 
     if (serverQueue.player) {
-        serverQueue.songs.shift();
+        serverQueue.isSkipping = true;
         serverQueue.player.stopTrack();
         return message.reply(`⏭ Musik **${currentSong.info.title}** di-skip!`);
     } else {

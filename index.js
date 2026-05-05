@@ -23,17 +23,30 @@ const client = new Client({
 
 const Nodes = [{
     name: 'Main-Node',
-    url: `${process.env.LAVA_HOST}:${process.env.LAVA_PORT}`,
-    auth: process.env.LAVA_PASS,
-    secure: process.env.LAVA_SECURE === 'true'
+    url: `${process.env.LAVALINK_HOST}:${process.env.LAVALINK_PORT}`,
+    auth: process.env.LAVALINK_PASS,
+    secure: process.env.LAVALINK_SECURE === 'true'
 }];
 
-const shoukaku = new Shoukaku(new Connectors.DiscordJS(client), Nodes);
+const shoukaku = new Shoukaku(new Connectors.DiscordJS(client), Nodes, {
+    moveOnDisconnect: true,
+    resume: true,
+    resumeTimeout: 60,
+    reconnectTries: 100,
+    reconnectInterval: 5000,
+});
 const queue = new Map();
 const idleTimers = new Map();
 
 shoukaku.on('ready', (name) => console.log(`[LAVALINK] Node ${name} is connected.`));
 shoukaku.on('error', (name, error) => console.error(`[LAVALINK] Node ${name} error:`, error));
+shoukaku.on('close', (name, code, reason) => console.warn(`[LAVALINK] Node ${name} closed. Code: ${code}, Reason: ${reason}`));
+shoukaku.on('disconnect', (name, players, moved) => {
+    console.warn(`[LAVALINK] Node ${name} disconnected. Players: ${players.length}, Moved: ${moved}`);
+});
+shoukaku.on('reconnecting', (name, left, interval) => {
+    console.log(`[LAVALINK] Node ${name} is reconnecting... Tries left: ${left}, Interval: ${interval}ms`);
+});
 
 client.once("ready", () => {
     console.log(`[DISCORD] Bot is online as ${client.user.tag}`);
@@ -120,7 +133,7 @@ client.on('messageCreate', async (message) => {
             play(message, args, shoukaku, queue, idleTimers);
         } 
         else if (command === 'stop' || command === 's') {
-            stop(message, queue, shoukaku);
+            stop(message, queue, shoukaku, idleTimers);
         }
         else if (command === 'skip' || command === 'sk') {
             skip(message, queue);
@@ -144,7 +157,7 @@ client.on('messageCreate', async (message) => {
             repeat(message, args, queue);
         }
         else {
-            message.reply("Command gak ada, coba ketik \`${process.env.PREFIX}help\` buat liat daftar command yang ada.");
+            message.reply(`Command gak ada, coba ketik \`${process.env.PREFIX}help\` buat liat daftar command yang ada.`);
         }
     } catch (err) {
         console.error("Handler Error:", err);

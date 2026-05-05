@@ -12,7 +12,7 @@ A powerful and optimized Discord music bot built with **Node.js**, **Discord.js*
 For a smooth experience, we recommend using a Lavalink setup that already includes essential plugins (LavaSrc, YouTube, etc.). You can find a pre-configured version here:
 * 👉 **[GlaceYT/Lavalink Repository](https://github.com/GlaceYT/Lavalink)**
 
-#### 2. Installation
+2. Installation
 Clone this repository and install the required dependencies:
 
     ```bash
@@ -27,12 +27,12 @@ Create a .env file in the root directory of the project and fill in your credent
     DISCORD_TOKEN=
     PREFIX=b!
     
-    LAVA_HOST=
-    LAVA_PORT=
-    LAVA_PASS=
-    LAVA_SECURE=false
+    LAVALINK_HOST=
+    LAVALINK_PORT=
+    LAVALINK_PASS=
+    LAVALINK_SECURE=false
 
-Note: Set LAVA_SECURE to true if your Lavalink provider uses SSL (https/wss).
+Note: Set LAVALINK_SECURE to true if your Lavalink provider uses SSL (https/wss).
 
 4. Running the Bot
 Once everything is configured, you can start the bot using:
